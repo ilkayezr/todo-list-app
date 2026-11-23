@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    name String
+    email String @unique 
+    passwordHash String
+    todos Todo[]
+    
+}
+
+model Todo {
+    id Int @id @default(autoincrement())
+    title String
+    description String?
+    status TodoStatus @default(TODO)
+    userId Int
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+}
+
+enum TodoStatus {
+    TODO
+    IN_PROGRESS
+    DONE
+}
